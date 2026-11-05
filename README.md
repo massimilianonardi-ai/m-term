@@ -20,7 +20,8 @@ git -C ../pkg-catalog pull --ff-only
 ```
 
 Run from an actual interactive terminal, use arrow keys and Enter to select,
-then inspect the returned selection. The earlier GitHub-hosted Ubuntu real
-package test covered installation, library loading and the `menu` command's
-argument error path; **interactive TTY selection has not yet been verified**
+then inspect the returned selection. The GitHub-hosted Ubuntu/macOS real package test
+`m-core` run `42037725004` covered installation, library loading and the
+`menu` command's argument error path; **interactive TTY selection has not yet
+been verified**
 on the operator's host. No fake menu or fake exported libraries are involved.
