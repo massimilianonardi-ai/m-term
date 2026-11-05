@@ -416,7 +416,7 @@ menu_command_main()
     menu_command_tab=$(printf '\tX')
     menu_command_tab=${menu_command_tab%X}
     menu_command_newline='
-  '
+'
 
     array menu_command_fs_values || fatal 2 execution execution-failed operation menu reason filesystem-list-storage-failed
     array menu_command_fs_labels || fatal 2 execution execution-failed operation menu reason filesystem-list-storage-failed
