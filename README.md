@@ -22,9 +22,9 @@ git -C ../pkg-catalog pull --ff-only
 Run from an actual interactive terminal, use arrow keys and Enter to select,
 then inspect the returned selection. The GitHub-hosted Ubuntu/macOS real package test
 `m-core` run `42037725004` covered installation, library loading and the
-`menu` command's argument error path; **interactive TTY selection has not yet
-been verified**
-on the operator's host. No fake menu or fake exported libraries are involved.
+`menu` command's argument error path; interactive TTY selection was reported **PASS by the operator on vmdev**
+for the earlier published package. That report is not a formally pinned
+physical-host record and does not validate the newly refactored main source. No fake menu or fake exported libraries are involved.
 
 The current source separates the menu command's POSIX implementation into
 `menu-command.lib.sh`, allowing explicit in-memory source injection without
