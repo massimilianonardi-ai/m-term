@@ -1,0 +1,202 @@
+NAME
+    menu - interactive terminal selector and filesystem browser
+
+SYNOPSIS
+    menu [-H header] [-F footer] [-B bottom-footer]
+         [-K action-key ...] [-M] [-S toggle-key] [--] item ...
+
+    menu [-H header] [-F footer] [-B bottom-footer]
+         [-K action-key ...]
+         [-M] [-S toggle-key] [-P parent-key]
+         [-n] [-m] [-c] -d directory
+
+DESCRIPTION
+    menu displays an interactive list on the terminal while reserving standard
+    output for a machine-readable successful result.
+
+    In list mode, items come from command-line operands. In filesystem mode,
+    -d selects a starting directory and Enter browses subdirectories.
+
+    Single selection is the default. An action returns only the current item
+    and the renderer does not show multi-selection boxes.
+
+    -M explicitly enables multi-selection with Space as the default toggle.
+    -S toggle-key also enables multi-selection and uses toggle-key instead.
+
+OPTIONS
+    -H header
+        Show header at the top of the menu. In filesystem mode the current
+        absolute directory follows this text on the next line.
+
+    -F footer
+        Show footer immediately after the visible items.
+
+    -B bottom-footer
+        Anchor footer text at the bottom of the terminal.
+
+    -K action-key
+        Add an action key. May be repeated. List mode also always accepts Enter
+        as confirmation.
+
+        Filesystem mode may omit -K in both single-selection and
+        multi-selection. When it does, Tab is the fallback confirmation action.
+        If any -K is supplied, only the explicit action keys are used and Tab
+        is not added implicitly.
+
+    -M
+        Enable multi-selection. Space is the default toggle key.
+
+    -S toggle-key
+        Enable multi-selection and use toggle-key as the mark toggle. If -M is
+        also present, -S determines the toggle key.
+
+    -P parent-key
+        Filesystem mode only. Replace the default Backspace parent-navigation
+        key. The configured parent key is reserved within filesystem mode.
+
+    -d directory
+        Use filesystem mode rooted initially at directory.
+
+    -n
+        Filesystem mode only. Hide hidden entries. Hidden entries are shown by
+        default.
+
+    -m
+        Filesystem mode only. Mix directories and non-directories in one
+        lexical ordering. By default directories sort before other entries.
+
+    -c
+        Filesystem mode only. Confine browsing to the physically resolved
+        subtree of the starting directory. The parent entry is omitted at the
+        confinement root and directory symlinks cannot navigate outside it.
+
+LIST ITEMS
+    label
+        Display and return the same string.
+
+    value@:=label
+        Display label and return value. The first @:= separates value from
+        label.
+
+KEYS
+    Up, Down
+        Move one item.
+
+    PageUp, PageDown
+        Move by one visible page.
+
+    Home, End
+        Move to the first or last item.
+
+    Space
+        In default single-selection mode Space has no special meaning unless
+        configured as an action key. With -M it toggles the current mark.
+
+    Enter
+        In list mode, finish with action key enter. In filesystem mode, enter a
+        selected directory; Enter on a non-directory does not finish.
+
+    Backspace
+        Filesystem mode only. Navigate to the current directory's parent by
+        default, with the same confinement rules as entering ...
+
+    Tab
+        In filesystem mode with no explicit -K, confirm the current selection.
+        In multi-selection this returns the marked values, or the current item
+        when nothing is marked. This fallback is unavailable when Tab is
+        already the configured toggle or parent-navigation key; in that case an
+        explicit -K is required.
+
+    Escape
+        Cancel.
+
+    Configurable action/toggle/parent keys may be one text key or these named
+    keys:
+
+        space nul tab backtab backspace left right insert delete f1 ... f20
+
+    arrow_left and arrow_right are accepted command-line aliases for left and
+    right. Engine navigation keys, Escape and Enter cannot be configured as
+    -K/-S/-P. A key cannot serve simultaneously as action, enabled
+    multi-selection toggle and filesystem parent navigation.
+
+MULTI-SELECTION
+    Multi-selection is disabled by default.
+
+    With -M or -S, the active toggle key marks/unmarks the current item without
+    finishing the menu. If no item is marked when an action finishes, the
+    current item is returned. If items are marked, only marked values are
+    returned, in menu/provider order.
+
+    In filesystem mode, no explicit -K means Tab is the confirmation action
+    in both single-selection and multi-selection. Supplying any explicit -K
+    suppresses that fallback.
+
+    Changing filesystem directory clears marks from the previous directory
+    view.
+
+FILESYSTEM MODE
+    The current directory is resolved physically and displayed in the header.
+    Hidden entries are included unless -n is used. Directory groups and mixed
+    listings use ascending bytewise lexical order.
+
+    Returned values are absolute selected paths. Display sanitization used to
+    keep unusual filenames on one terminal row does not replace the returned
+    path value.
+
+    The visible .. entry remains present whenever parent navigation is allowed.
+    Backspace, or the key selected with -P, behaves as though .. had been
+    selected and entered. At /, and at the confinement root when -c is active,
+    the parent key is ignored.
+
+OUTPUT
+    On success, stdout contains one shell-safe serialized argument vector:
+
+        action-key value-1 ... value-n
+
+    In single-selection mode exactly one value follows the action key. In
+    multi-selection mode multiple values may follow.
+
+    The serialization is produced with the m quote primitive. To consume it:
+
+        result=$(menu ...)
+        status=$?
+        [ "$status" -eq 0 ] || exit "$status"
+        eval "set -- $result"
+        key=$1
+        shift
+
+    "$@" then contains the selected values exactly as shell strings. Do not use
+    unquoted word splitting such as set -- $(menu ...).
+
+    The same result can initialize an array after successful execution:
+
+        eval "array result set $result"
+
+    Canonical result key names include enter, space, tab, left, right and the
+    configured text/function-key token.
+
+ENVIRONMENT
+    Requires a nonempty m_ROOT inherited from an initialized m environment.
+    From an uninitialized host shell, invoke m menu [arguments].
+
+
+RETURN STATUS
+    0   Successful action result.
+    1   User/provider cancellation.
+    2   Invalid invocation or menu/provider/terminal failure.
+
+    Signal-derived statuses from an interrupted interactive session are
+    propagated.
+
+FILES
+    bin/sys/menu
+        Public command.
+
+    lib/sys/sh/menu.lib.sh
+        Reusable menu engine.
+
+SEE ALSO
+    manual menu.lib.sh
+    manual term.lib.sh
+    manual array.lib.sh
