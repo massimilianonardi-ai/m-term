@@ -13,6 +13,15 @@ DESCRIPTION
     array.lib.sh for array-backed providers/results and map.lib.sh for internal
     key/selection sets.
 
+SOURCE LOADING
+    With the m base facilities already loaded, menu.lib.sh loads any missing
+    array, map and term public function sources from the selected package PATH
+    view using POSIX dot-source. In explicitly generated in-memory injection
+    streams, those dependencies are preloaded from caller-selected source
+    files, and menu.lib.sh does not require their files on the remote host.
+    The caller must ensure those sources represent the intended compatible
+    package selections; the library performs no dependency discovery.
+
 PUBLIC CONFIGURATION
     menu_header
         Header text rendered above the menu.
