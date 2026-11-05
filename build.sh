@@ -30,5 +30,5 @@ do
 done
 (
   CDPATH= cd -- "$output_root/root"
-  command -p -- tar -czf "../m-term-v0.1.0-all.tar.gz" bin lib res
+  command -p -- tar -czf "../m-term-v0.1.1-all.tar.gz" bin lib res
 )
