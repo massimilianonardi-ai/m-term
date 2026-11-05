@@ -6,9 +6,13 @@ manuals. `menu.lib.sh` consumes the selected `m-core` `array` and `map`
 libraries plus `term.lib.sh` using the package-local POSIX dot-source
 surface. `m` bootstrap and system-library `loadsyslib` stay in `m-os`.
 
-The immutable `v0.1.0` GitHub release is built by `sh build.sh release`.
-The real `pkg-catalog/pkg-schema-v2` definition publishes two shell
-libraries and two commands in the immutable v0.1.0 release, with archive checksum verification.
+The immutable `v0.1.0` GitHub release was built from the earlier
+source with `sh build.sh release`. Its existing v2 catalog definition
+publishes two libraries and two commands with archive checksum verification.
+The current source now includes a third library; `build.sh` still uses the
+old archive filename for local source validation only and must not be used
+to replace the immutable release. A coordinated new version and catalog entry
+are pending authentic integration validation.
 
 First-time interactive use from an existing `m-os/pkg-schema-v2` checkout
 with a sibling `pkg-catalog/pkg-schema-v2` checkout already configured:
