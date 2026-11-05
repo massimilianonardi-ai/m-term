@@ -9,10 +9,9 @@ surface. `m` bootstrap and system-library `loadsyslib` stay in `m-os`.
 The immutable `v0.1.0` GitHub release was built from the earlier
 source with `sh build.sh release`. Its existing v2 catalog definition
 publishes two libraries and two commands with archive checksum verification.
-The current source now includes a third library; `build.sh` still uses the
-old archive filename for local source validation only and must not be used
-to replace the immutable release. A coordinated new version and catalog entry
-are pending authentic integration validation.
+The current `build.sh` emits a distinct `v0.1.1` archive, and the v2
+catalog has an independent version entry exporting all three shell libraries,
+including `menu-command.lib.sh`. The old release remains unchanged.
 
 First-time interactive use from an existing `m-os/pkg-schema-v2` checkout
 with a sibling `pkg-catalog/pkg-schema-v2` checkout already configured:
@@ -33,5 +32,6 @@ physical-host record and does not validate the newly refactored main source. No 
 The current source separates the menu command's POSIX implementation into
 `menu-command.lib.sh`, allowing explicit in-memory source injection without
 copying the menu implementation or requiring a remote m installation. This
-source revision is not part of immutable v0.1.0 and is not yet a published
-package revision. The existing hosted smoke was pinned to that older release.
+source revision is absent from immutable v0.1.0 and published in immutable
+v0.1.1. The earlier hosted smoke was pinned to the older release; R1
+validates the new public package installation separately.
