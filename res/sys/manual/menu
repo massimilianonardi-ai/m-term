@@ -11,6 +11,11 @@ SYNOPSIS
          [-n] [-m] [-c] -d directory
 
 DESCRIPTION
+    The native command loads package-local menu.lib.sh and
+    menu-command.lib.sh, then calls menu_command_main. The same menu
+    implementation may be included as explicit shell source in an
+    rsudo injection stream without requiring a remote m installation.
+
     menu displays an interactive list on the terminal while reserving standard
     output for a machine-readable successful result.
 

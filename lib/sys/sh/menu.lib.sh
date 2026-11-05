@@ -87,9 +87,12 @@
 #   2  invalid API usage or menu/provider/terminal failure
 #   signal-derived statuses are propagated by the session
 
-. array.lib.sh || return 1
-. map.lib.sh || return 1
-. term.lib.sh || return 1
+# A source-injected shell may already carry these explicitly selected
+# libraries in memory. Native package consumers still load missing dependencies
+# using the package-local POSIX dot-source lookup on PATH.
+if ! exist_function array; then . array.lib.sh || return 1; fi
+if ! exist_function map; then . map.lib.sh || return 2; fi
+if ! exist_function term_read_key; then . term.lib.sh || return 3; fi
 
 #-------------------------------------------------------------------------------
 

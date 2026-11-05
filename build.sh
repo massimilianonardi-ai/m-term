@@ -7,7 +7,7 @@ output_root=$1
 self_dir=${0%/*}
 [ "$self_dir" != "$0" ] || self_dir=.
 command -p -- mkdir -p -- "$output_root/root/bin" "$output_root/root/lib/sh" "$output_root/root/res/manual"
-for name in term menu
+for name in term menu menu-command
 do
   source_file="$self_dir/lib/sys/sh/$name.lib.sh"
   [ -f "$source_file" ] && [ -r "$source_file" ] || exit 4
